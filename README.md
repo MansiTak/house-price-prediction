@@ -33,9 +33,9 @@ python house_price_prediction.py
 
 
 📊 Model Metrics Output
-2. Mean Absolute Error (MAE)
-3. Mean Squared Error (MSE)
-4. Root Mean Squared Error (RMSE)
+1. Mean Absolute Error (MAE)
+2. Mean Squared Error (MSE)
+3. Root Mean Squared Error (RMSE)
 
 
 ⚙️ Models Used
