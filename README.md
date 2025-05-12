@@ -14,8 +14,8 @@ house-price-prediction/
 🚀 How to Run the Project
 
 1. Clone the Repository
-git clone https://github.com/your-username/house-price-prediction.git
-cd house-price-prediction
+- git clone https://github.com/your-username/house-price-prediction.git
+- cd house-price-prediction
 
 2. Create & Activate a Virtual Environment (Optional but Recommended)
 - python -m venv venv
@@ -36,7 +36,7 @@ python house_price_prediction.py
 1. After training, the model will output:
 2. Mean Absolute Error (MAE)
 3. Mean Squared Error (MSE)
-4.Root Mean Squared Error (RMSE)
+4. Root Mean Squared Error (RMSE)
 
 These help you assess how well your model is performing.
 
