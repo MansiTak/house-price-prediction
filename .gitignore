@@ -1,14 +1,14 @@
-# Python
+# Ignore Python virtual environments
+house_env/
+
+# Ignore bytecode files
+*.pyc
+*.pyo
 __pycache__/
-*.py[cod]
 
-# Environments
-venv/
-env/
-
-# VSCode
+# Ignore IDE-specific files
 .vscode/
+.idea/
 
-# Others
-.DS_Store
+# Ignore environment variables files
 .env
