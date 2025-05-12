@@ -18,8 +18,8 @@ git clone https://github.com/your-username/house-price-prediction.git
 cd house-price-prediction
 
 2. Create & Activate a Virtual Environment (Optional but Recommended)
-python -m venv venv
-source venv/bin/activate
+- python -m venv venv
+- source venv/bin/activate
 # On Windows use: venv\Scripts\activate
 
 3. Install Required Dependencies
