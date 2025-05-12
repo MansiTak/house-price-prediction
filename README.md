@@ -20,7 +20,7 @@ house-price-prediction/
 2. Create & Activate a Virtual Environment (Optional but Recommended)
 - python -m venv venv
 - source venv/bin/activate
-# On Windows use: venv\Scripts\activate
+- On Windows use: venv\Scripts\activate
 
 3. Install Required Dependencies
 pip install -r requirements.txt
@@ -33,7 +33,6 @@ python house_price_prediction.py
 
 
 📊 Model Metrics Output
-1. After training, the model will output:
 2. Mean Absolute Error (MAE)
 3. Mean Squared Error (MSE)
 4. Root Mean Squared Error (RMSE)
@@ -65,7 +64,7 @@ python house_price_prediction.py
 
 
 🛠 Requirements
-See requirements.txt.
+- See requirements.txt.
 
 
 ## How to Run
