@@ -15,7 +15,9 @@ st.set_page_config(page_title="House Price Prediction App", layout="wide")
 st.title("🏠 House Price Prediction App")
 
 # Create two tabs
-tab1, tab2 = st.tabs(["🔮 Predict Price", "📊 Evaluation Results"])
+# tab1, tab2 = st.tabs(["🔮 Predict Price", "📊 Evaluation Results"])
+tab1, tab2, tab3 = st.tabs(["🔮 Predict Price", "📊 Evaluation Results", "📂 View Dataset"])
+
 
 # -------------------------
 # 🔮 Tab 1: Predict Price
@@ -113,3 +115,12 @@ with tab2:
             ax2.set_ylabel("Residuals")
             ax2.set_title("Residuals vs Predicted Prices")
             st.pyplot(fig2)
+
+
+# -------------------------
+# 📂 Tab 3: View Dataset
+# -------------------------
+with tab3:
+    st.write(" Dataset Preview","from Kaggle")
+    data = pd.read_csv("train.csv")  # Replace with the actual filename
+    st.dataframe(data)
