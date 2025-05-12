@@ -1,5 +1,5 @@
 # 🏠 House Price Prediction Project
-This project uses machine learning to predict house prices based on various features like location, area, condition, and more. It is built using Python and popular ML libraries like scikit-learn, pandas, and xgboost.
+This project uses machine learning to predict house prices based on various features like location, area, condition, and more. It is built using Python and popular ML libraries like scikit-learn, pandas, etc.
 
 ##📁 Project Structure
 
@@ -38,37 +38,30 @@ python house_price_prediction.py
 3. Mean Squared Error (MSE)
 4. Root Mean Squared Error (RMSE)
 
-These help you assess how well your model is performing.
-
 
 ⚙️ Models Used
-Linear Regression
-Random Forest Regressor
-(Optional) XGBoost Regressor
-
+- Random Forest Regressor
 
 ✅ Features
-Clean data preprocessing pipeline
-Missing value handling
-Performance evaluation
-Easy deployment & scalability
-Encoding categorical variables
-Model training and evaluation
+- Clean data preprocessing pipeline
+- Missing value handling
+- Performance evaluation
+- Easy deployment & scalability
+- Encoding categorical variables
+- Model training and evaluation
 
 
 🧪 To Do
-Add model persistence (save trained models)
-Add cross-validation
-Hyperparameter tuning
+- Add model persistence (save trained models
+- Add cross-validation
+- Hyperparameter tuning
 
 
 🧠 Learnings
-This project demonstrates:
-End-to-end ML workflow
-Feature engineering
-Model comparison
-Real-world error analysis
-
+- End-to-end ML workflow
+- Feature engineering
+- Model comparison
+- Real-world error analysis
 
 
 🛠 Requirements
