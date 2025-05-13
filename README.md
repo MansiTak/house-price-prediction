@@ -10,7 +10,7 @@ house-price-prediction/
 - requirements.txt           (Project dependencies)
 - .gitignore                 (Files ignored by Git)
 - README.md                  (Project documentation)
-- app.py                     ( Streamlit app script)
+- app.py                     (Streamlit app script)
 ```
 
 🚀 How to Run the Project
