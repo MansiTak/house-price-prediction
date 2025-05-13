@@ -3,34 +3,44 @@ This project uses machine learning to predict house prices based on various feat
 
 ##📁 Project Structure
 
+```
 house-price-prediction/
-- data/                      (Contains the CSV dataset files)
+- data/train.csv             (Contains the CSV dataset files)
 - house_price_prediction.py  (Main script for training and evaluation)
 - requirements.txt           (Project dependencies)
 - .gitignore                 (Files ignored by Git)
 - README.md                  (Project documentation)
-
+```
 
 🚀 How to Run the Project
 
 1. Clone the Repository
-- git clone https://github.com/your-username/house-price-prediction.git
-- cd house-price-prediction
-
+```
+git clone https://github.com/your-username/house-price-prediction.git
+cd house-price-prediction
+```
 2. Create & Activate a Virtual Environment (Optional but Recommended)
-- python -m venv venv
-- source venv/bin/activate
-- On Windows use: venv\Scripts\activate
+```
+python -m venv venv
+source venv/bin/activate
+```
+On Windows use:
 
-3. Install Required Dependencies
+```
+venv\Scripts\activate
+```
+4. Install Required Dependencies
+```
 pip install -r requirements.txt
+```
 
-4. Add Your Dataset
+5. Add Your Dataset
 Place your train.csv and test.csv (or similar data files) inside the data/ folder.
 
-5. Run the Script
+6. Run the Script
+```
 python house_price_prediction.py
-
+```
 
 📊 Model Metrics Output
 1. Mean Absolute Error (MAE)
@@ -65,10 +75,4 @@ python house_price_prediction.py
 
 🛠 Requirements
 - See requirements.txt.
-
-
-## How to Run
-
-```bash
-python house_price_prediction.py
 
