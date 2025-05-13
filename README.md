@@ -1,7 +1,7 @@
 # 🏠 House Price Prediction Project
 This project uses machine learning to predict house prices based on various features like location, area, condition, and more. It is built using Python and popular ML libraries like scikit-learn, pandas, etc.
 
-##📁 Project Structure
+## 📁 Project Structure
 
 ```
 house-price-prediction/
@@ -10,6 +10,7 @@ house-price-prediction/
 - requirements.txt           (Project dependencies)
 - .gitignore                 (Files ignored by Git)
 - README.md                  (Project documentation)
+- app.py                     ( Streamlit app script)
 ```
 
 🚀 How to Run the Project
