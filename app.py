@@ -3,9 +3,19 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 import numpy as np  # Import numpy
-import os
-import joblib
-import pandas as pd
+
+# Load the trained model pipeline and input template
+pipeline = joblib.load("model_pipeline.pkl")
+template = pd.read_csv("input_template.csv")
+
+# Set page config for better layout
+st.set_page_config(page_title="House Price Prediction App", layout="wide")
+
+# Title
+st.title("🏠 House Price Prediction App")
+
+# Create two tabs
+tab1, tab2, tab3 = st.tabs(["🔮 Predict Price", "📊 Evaluation Results", "📂 View Dataset"])
 
 # -------------------------
 # 🔮 Tab 1: Predict Price
