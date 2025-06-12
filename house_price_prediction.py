@@ -118,11 +118,18 @@ if __name__ == "__main__":
 
     print("\n✅ Model pipeline and evaluation artifacts saved successfully.")
 
-joblib.dump(X_train.columns.tolist(), 'model_columns.pkl')
+# Generate and save files needed for app and CI
 joblib.dump(pipeline, 'model_pipeline.pkl')
+joblib.dump(X.columns.tolist(), 'model_columns.pkl')
 X.iloc[[0]].to_csv("input_template.csv", index=False)
 pd.Series(y_test).to_csv("y_test.csv", index=False)
+
+# Predict with trained pipeline
+y_pred_rf = pipeline.predict(X_test)
 pd.Series(y_pred_rf).to_csv("y_pred.csv", index=False)
+
+
+
 # import pandas as pd
 # import numpy as np
 # import joblib
