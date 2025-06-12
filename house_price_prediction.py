@@ -1,133 +1,126 @@
+import streamlit as st
 import pandas as pd
-import numpy as np
 import joblib
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, mean_absolute_error, root_mean_squared_error
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.pipeline import Pipeline
-
-# Step 1: Load and inspect data
-data = pd.read_csv('train.csv')
-
-print("First 5 rows of the dataset:")
-print(data.head())
-print("\nDataset Info:")
-print(data.info())
-
-# Step 2: Handle missing values & encode
-missing_values = data.isnull().sum()
-print("\nMissing values in each column:")
-print(missing_values[missing_values > 0])
-
-# Quality mapping
-quality_map = {'Ex': 5, 'Gd': 4, 'TA': 3, 'Fa': 2, 'Po': 1}
-ordinal_cols = ['ExterQual', 'ExterCond', 'BsmtQual', 'BsmtCond', 'HeatingQC',
-                'KitchenQual', 'FireplaceQu', 'GarageQual', 'GarageCond', 'PoolQC']
-for col in ordinal_cols:
-    data[col] = data[col].map(quality_map).fillna(0)
-
-# Fence mapping
-fence_map = {'GdPrv': 4, 'MnPrv': 3, 'GdWo': 2, 'MnWw': 1}
-data['Fence'] = data['Fence'].map(fence_map).fillna(0)
-
-# Binary columns
-binary_cols = ['CentralAir', 'Alley']
-for col in binary_cols:
-    data[col] = data[col].map({'Y': 1, 'N': 0}).fillna(0)
-
-# One-hot encode nominal columns
-nominal_cols = ['MSZoning', 'Street', 'LotShape', 'LandContour', 'Utilities', 
-                'LotConfig', 'LandSlope', 'Neighborhood', 'Condition1', 'Condition2', 
-                'BldgType', 'HouseStyle', 'RoofStyle', 'RoofMatl', 'Exterior1st', 
-                'Exterior2nd', 'MasVnrType', 'Foundation', 'BsmtExposure', 'BsmtFinType1', 
-                'BsmtFinType2', 'Heating', 'Electrical', 'Functional', 'GarageType', 
-                'GarageFinish', 'PavedDrive', 'MiscFeature', 'SaleType', 'SaleCondition']
-
-data = pd.get_dummies(data, columns=nominal_cols, drop_first=True)
-
-# Impute any remaining missing values
-data.fillna(data.mode().iloc[0], inplace=True)
-data.fillna(data.median(numeric_only=True), inplace=True)
-
-# Step 3: Feature-target split
-X = data.drop('SalePrice', axis=1)
-y = data['SalePrice']
-
-# Drop constant columns
-X = X.loc[:, X.nunique() > 1]
-
-# Save template input
-X.iloc[[0]].to_csv("input_template.csv", index=False)
- 
-# Step 4: Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Step 5: Create & train pipeline
-pipeline = Pipeline([
-    ('scaler', StandardScaler()),
-    ('model', RandomForestRegressor(n_estimators=100, random_state=42))
-])
-
-pipeline.fit(X_train, y_train)
- 
-# Step 6: Evaluate model
-y_pred_rf = pipeline.predict(X_test)
-
-mae_rf = mean_absolute_error(y_test, y_pred_rf)
-mse_rf = mean_squared_error(y_test, y_pred_rf)
-rmse_rf = root_mean_squared_error(y_test, y_pred_rf)
-
-print(f"\n✅ Random Forest MAE: {mae_rf}")
-print(f"✅ Random Forest MSE: {mse_rf}")
-print(f"✅ Random Forest RMSE: {rmse_rf}")
- 
-# Step 7: Save pipeline and metadata
-joblib.dump(X_train.columns.tolist(), 'model_columns.pkl')
-joblib.dump(pipeline, 'model_pipeline.pkl')
-print("\n✅ Model pipeline and column names saved successfully.")
-
-
 import matplotlib.pyplot as plt
+import numpy as np  # Import numpy
 
-# Ensure y_test is a Series with a reset index
-if isinstance(y_test, pd.Series):
+# Load the trained model pipeline and input template
+pipeline = joblib.load("model_pipeline.pkl")
+template = pd.read_csv("input_template.csv")
+
+# Set page config for better layout
+st.set_page_config(page_title="House Price Prediction App", layout="wide")
+
+# Title
+st.title("🏠 House Price Prediction App")
+
+# Create two tabs
+# tab1, tab2 = st.tabs(["🔮 Predict Price", "📊 Evaluation Results"])
+tab1, tab2, tab3 = st.tabs(["🔮 Predict Price", "📊 Evaluation Results", "📂 View Dataset"])
+
+
+# -------------------------
+# 🔮 Tab 1: Predict Price
+# -------------------------
+with tab1:
+    st.write("### Enter House Features Below:")
+
+    # ===== Common numerical inputs =====
+    overall_qual = st.slider("Overall Quality (1-10)", 1, 10, int(template.loc[0, 'OverallQual']))
+    gr_liv_area = st.number_input("Above Ground Living Area (sq ft)", 100, 10000, int(template.loc[0, 'GrLivArea']))
+    garage_cars = st.slider("Garage Cars Capacity", 0, 5, int(template.loc[0, 'GarageCars']))
+    garage_area = st.number_input("Garage Area (sq ft)", 0, 2000, int(template.loc[0, 'GarageArea']))
+    total_bsmt_sf = st.number_input("Basement Area (sq ft)", 0, 3000, int(template.loc[0, 'TotalBsmtSF']))
+    year_built = st.slider("Year Built", 1870, 2025, int(template.loc[0, 'YearBuilt']))
+
+    # ===== Other useful numeric fields (optional) =====
+    first_flr_sf = st.number_input("1st Floor SF", 0, 4000, int(template.loc[0, '1stFlrSF']))
+    second_flr_sf = st.number_input("2nd Floor SF", 0, 4000, int(template.loc[0, '2ndFlrSF']))
+    full_bath = st.slider("Full Bathrooms", 0, 5, int(template.loc[0, 'FullBath']))
+    half_bath = st.slider("Half Bathrooms", 0, 3, int(template.loc[0, 'HalfBath']))
+    totrms_abvgrd = st.slider("Total Rooms Above Ground", 1, 15, int(template.loc[0, 'TotRmsAbvGrd']))
+    fireplaces = st.slider("Fireplaces", 0, 4, int(template.loc[0, 'Fireplaces']))
+    lot_area = st.number_input("Lot Area (sq ft)", 1000, 100000, int(template.loc[0, 'LotArea']))
+
+    # ===== Update only selected fields in the full template =====
+    input_data = template.copy()
+    input_data.at[0, 'OverallQual'] = overall_qual
+    input_data.at[0, 'GrLivArea'] = gr_liv_area
+    input_data.at[0, 'GarageCars'] = garage_cars
+    input_data.at[0, 'GarageArea'] = garage_area
+    input_data.at[0, 'TotalBsmtSF'] = total_bsmt_sf
+    input_data.at[0, 'YearBuilt'] = year_built
+    input_data.at[0, '1stFlrSF'] = first_flr_sf
+    input_data.at[0, '2ndFlrSF'] = second_flr_sf
+    input_data.at[0, 'FullBath'] = full_bath
+    input_data.at[0, 'HalfBath'] = half_bath
+    input_data.at[0, 'TotRmsAbvGrd'] = totrms_abvgrd
+    input_data.at[0, 'Fireplaces'] = fireplaces
+    input_data.at[0, 'LotArea'] = lot_area
+
+    # Predict button
+    if st.button("Predict Price"):
+        prediction = pipeline.predict(input_data)[0]
+        st.success(f"🏡 Estimated House Price: ${prediction:,.2f}")
+
+# -------------------------
+# 📊 Tab 2: Evaluation Results
+# -------------------------
+with tab2:
+    st.write("### Model Evaluation on Test Set")
+
+    # Load y_test and y_pred
+    y_test = pd.read_csv("y_test.csv")
+    y_pred = pd.read_csv("y_pred.csv")
+
+    # Ensure both y_test and y_pred are Series and reset their indices
     y_test = y_test.reset_index(drop=True)
+    y_pred = y_pred.reset_index(drop=True)
 
-# Ensure y_pred is a NumPy array or Series with matching index
-y_pred = pd.Series(y_pred_rf).reset_index(drop=True)
+    # Convert y_test and y_pred to numpy arrays
+    y_test = np.array(y_test).flatten()  # Convert to 1D array
+    y_pred = np.array(y_pred).flatten()  # Convert to 1D array
 
-# 1. Sample Predictions
-print("\n🔍 Sample Predictions:")
-for actual, predicted in zip(y_test[:10], y_pred[:10]):
-    print(f"Actual: {actual}, Predicted: {round(predicted, 2)}")
+    # Debugging: Print the length of y_test and y_pred
+    st.write(f"Length of y_test: {len(y_test)}")
+    st.write(f"Length of y_pred: {len(y_pred)}")
 
-# 2. Actual vs Predicted Plot
-plt.figure(figsize=(8, 6))
-plt.scatter(y_test, y_pred, alpha=0.5, color='blue')
-plt.xlabel("Actual Prices")
-plt.ylabel("Predicted Prices")
-plt.title("Actual vs Predicted House Prices")
-plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], color='red', linewidth=2)
-plt.grid(True)
-plt.tight_layout()
-plt.savefig("actual_vs_predicted.png")
-plt.show()
+    # Check that the lengths match
+    if len(y_test) != len(y_pred):
+        st.error("Mismatch between the lengths of actual and predicted values!")
+    else:
+        # Plot 1: Actual vs Predicted
+        fig1, ax1 = plt.subplots()
+        ax1.scatter(y_test, y_pred, alpha=0.5, color='blue')
+        ax1.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], color='red', linewidth=2)
+        ax1.set_xlabel("Actual Prices")
+        ax1.set_ylabel("Predicted Prices")
+        ax1.set_title("Actual vs Predicted House Prices")
+        st.pyplot(fig1)
 
-# 3. Residuals Plot
-residuals = y_test - y_pred
-plt.figure(figsize=(8, 6))
-plt.scatter(y_pred, residuals, alpha=0.5, color='purple')
-plt.axhline(0, color='red', linestyle='--', linewidth=2)
-plt.xlabel("Predicted Prices")
-plt.ylabel("Residuals")
-plt.title("Residuals vs Predicted Prices")
-plt.grid(True)
-plt.tight_layout()
-plt.savefig("residuals_plot.png")
-plt.close()
+        # Plot 2: Residuals vs Predicted
+        residuals = y_test - y_pred
+        
+        # Debugging: Print the length of residuals
+        st.write(f"Length of residuals: {len(residuals)}")
+
+        # Check if residuals and y_pred have the same length
+        if len(residuals) != len(y_pred):
+            st.error("Mismatch between the lengths of residuals and predicted values!")
+        else:
+            fig2, ax2 = plt.subplots()
+            ax2.scatter(y_pred, residuals, alpha=0.5, color='purple')
+            ax2.axhline(0, color='red', linestyle='--', linewidth=2)
+            ax2.set_xlabel("Predicted Prices")
+            ax2.set_ylabel("Residuals")
+            ax2.set_title("Residuals vs Predicted Prices")
+            st.pyplot(fig2)
 
 
-pd.Series(y_test).to_csv("y_test.csv", index=False)
-pd.Series(y_pred_rf).to_csv("y_pred.csv", index=False)
-
+# -------------------------
+# 📂 Tab 3: View Dataset
+# -------------------------
+with tab3:
+    st.write(" Dataset Preview","from Kaggle")
+    data = pd.read_csv("train.csv")  # Replace with the actual filename
+    st.dataframe(data)
