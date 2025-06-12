@@ -128,8 +128,6 @@ pd.Series(y_test).to_csv("y_test.csv", index=False)
 y_pred_rf = pipeline.predict(X_test)
 pd.Series(y_pred_rf).to_csv("y_pred.csv", index=False)
 
-
-
 # import pandas as pd
 # import numpy as np
 # import joblib
