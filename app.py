@@ -3,6 +3,37 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 import numpy as np  # Import numpy
+import os
+import joblib
+import pandas as pd
+
+# --- Auto-generate model files if they don't exist ---
+required_files = ["model_pipeline.pkl", "input_template.csv", "y_test.csv", "y_pred.csv"]
+
+if not all(os.path.exists(f) for f in required_files):
+    try:
+        from house_price_prediction import load_data, preprocess_data, train_model, evaluate_model
+        import numpy as np
+
+        # Train the model
+        df = load_data()
+        X_train, X_test, y_train, y_test, pipeline = train_model(preprocess_data(df))
+
+        # Save model
+        joblib.dump(pipeline, "model_pipeline.pkl")
+
+        # Save test data for Streamlit app
+        input_template = X_test.head(1)
+        input_template.to_csv("input_template.csv", index=False)
+
+        pd.Series(y_test).to_csv("y_test.csv", index=False)
+        y_pred = pipeline.predict(X_test)
+        pd.Series(y_pred).to_csv("y_pred.csv", index=False)
+
+        print("✅ Model files generated successfully.")
+
+    except Exception as e:
+        print("❌ Failed to auto-generate model files:", str(e))
 
 # Load the trained model pipeline and input template
 pipeline = joblib.load("model_pipeline.pkl")
