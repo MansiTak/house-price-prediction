@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import joblib
@@ -131,9 +130,4 @@ plt.close()
 
 pd.Series(y_test).to_csv("y_test.csv", index=False)
 pd.Series(y_pred_rf).to_csv("y_pred.csv", index=False)
-
-
-# Add this to expose something for test
-def example_addition(a, b):
-    return a + b
 
